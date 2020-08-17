@@ -15,8 +15,8 @@ RUN \
 
 EXPOSE 8000
 
-COPY startup.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY startup.sh /startup.sh
+RUN chmod +x /startup.sh
 
 WORKDIR /go/src/
 

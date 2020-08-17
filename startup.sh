@@ -7,14 +7,11 @@ while ! mysqladmin ping -h $MYSQL_HOST -u $MYSQL_USER -P $MYSQL_PORT --password=
     sleep 5
 done
 
-
 echo "--- Create database if one does not exist"
 mysql -h $MYSQL_HOST -P $MYSQL_PORT -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE"
 
-
 echo "--- Run migrations"
 /migrate -path /migrations -database "mysql://$MYSQL_USER:$MYSQL_PASSWORD@tcp($MYSQL_HOST:$MYSQL_PORT)/$MYSQL_DATABASE" up
-
 
 echo "--- Run fixtures for dev environment"
 mysql -h $MYSQL_HOST -P $MYSQL_PORT -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "USE $MYSQL_DATABASE"
@@ -24,12 +21,10 @@ for file in /dev-fixtures/*; do
     mysql -h $MYSQL_HOST -P $MYSQL_PORT -u $MYSQL_USER --default-character-set=utf8 --password=$MYSQL_PASSWORD --database=$MYSQL_DATABASE < $file
 done
 
-
 cd $PROJECT_URL
-
 go get
 
-echo "Run tests"
+echo "--- Run tests"
 go test -v ./...
 
 echo "Finished"
